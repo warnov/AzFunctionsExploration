@@ -18,8 +18,8 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     bool ok = false;
     if (queryParamms.TryGetValue("customerReference", out customerReference))
     {
-        var accountName = "sayouevaldev";
-        var accountKey = "MGpkGpZ/Vqs9u9aXADlJteA5E/FqvMBIzhywqyRrl2n8DHm+m8RuKhkVbSH7PyXYZSnLpFxQv8uWIJLS5vaofA==";
+        var accountName = "YOUR_ACCOUNT_NAME";
+        var accountKey = "YOUR_ACCOUNT_KEY";
         var storageAccount = CloudStorageAccount.Parse($"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};");
         var tableClient = storageAccount.CreateCloudTableClient();
         var table = tableClient.GetTableReference("AppSettings");

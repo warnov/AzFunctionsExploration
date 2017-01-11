@@ -13,8 +13,8 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
         .Value;
 
 
-    var accountName = "sayouevaldev";
-    var accountKey = "MGpkGpZ/Vqs9u9aXADlJteA5E/FqvMBIzhywqyRrl2n8DHm+m8RuKhkVbSH7PyXYZSnLpFxQv8uWIJLS5vaofA==";
+    var accountName = "YOUR_ACCOUNT_NAME";
+    var accountKey = "YOUR_ACCOUNT_KEY";
     var containerReference = "pub";
     var storageAccount = CloudStorageAccount.Parse($"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};");
     var blobClient = storageAccount.CreateCloudBlobClient();

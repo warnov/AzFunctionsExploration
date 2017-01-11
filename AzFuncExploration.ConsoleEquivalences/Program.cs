@@ -36,8 +36,8 @@ namespace XmlContentFromBlob
             /* sayouevaldev
             MGpkGpZ/Vqs9u9aXADlJteA5E/FqvMBIzhywqyRrl2n8DHm+m8RuKhkVbSH7PyXYZSnLpFxQv8uWIJLS5vaofA==
             /pub/books.xml  */
-            var accountName = "sayouevaldev";
-            var accountKey = "MGpkGpZ/Vqs9u9aXADlJteA5E/FqvMBIzhywqyRrl2n8DHm+m8RuKhkVbSH7PyXYZSnLpFxQv8uWIJLS5vaofA==";
+            var accountName = "YOUR_ACCOUNT_NAME";
+            var accountKey = "YOUR_ACCOUNT_KEY";
             var containerReference = "pub";
             var storageAccount = CloudStorageAccount.Parse($"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};");
             var blobClient = storageAccount.CreateCloudBlobClient();
@@ -56,8 +56,8 @@ namespace XmlContentFromBlob
 
         public static string TableAppSetting(string customerReference, string settingName="")
         {
-            var accountName = "sayouevaldev";
-            var accountKey = "MGpkGpZ/Vqs9u9aXADlJteA5E/FqvMBIzhywqyRrl2n8DHm+m8RuKhkVbSH7PyXYZSnLpFxQv8uWIJLS5vaofA==";
+            var accountName = "YOUR_ACCOUNT_NAME";
+            var accountKey = "YOUR_ACCOUNT_KEY";
             var storageAccount = CloudStorageAccount.Parse($"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};");
             var tableClient = storageAccount.CreateCloudTableClient();
             var table = tableClient.GetTableReference("AppSettings");
