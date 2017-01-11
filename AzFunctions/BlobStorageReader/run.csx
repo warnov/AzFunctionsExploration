@@ -12,9 +12,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
         .FirstOrDefault(q => string.Compare(q.Key, "blobName", true) == 0)
         .Value;
 
-    /* sayouevaldev
-MGpkGpZ/Vqs9u9aXADlJteA5E/FqvMBIzhywqyRrl2n8DHm+m8RuKhkVbSH7PyXYZSnLpFxQv8uWIJLS5vaofA==
-/pub/books.xml  */
+
     var accountName = "sayouevaldev";
     var accountKey = "MGpkGpZ/Vqs9u9aXADlJteA5E/FqvMBIzhywqyRrl2n8DHm+m8RuKhkVbSH7PyXYZSnLpFxQv8uWIJLS5vaofA==";
     var containerReference = "pub";
@@ -26,7 +24,7 @@ MGpkGpZ/Vqs9u9aXADlJteA5E/FqvMBIzhywqyRrl2n8DHm+m8RuKhkVbSH7PyXYZSnLpFxQv8uWIJLS
     {
         var blobByteLength = blob.Properties.Length;
         byte[] blobBytes = new byte[blobByteLength];
-        await blob .DownloadToByteArrayAsync(blobBytes, 0);
+        await blob.DownloadToByteArrayAsync(blobBytes, 0);
         var xmlContent = System.Text.Encoding.Default.GetString(blobBytes);
         return req.CreateResponse(HttpStatusCode.OK, xmlContent);
     }

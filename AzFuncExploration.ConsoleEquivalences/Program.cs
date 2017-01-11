@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
 
 namespace XmlContentFromBlob
 {
@@ -14,19 +15,19 @@ namespace XmlContentFromBlob
         static void Main(string[] args)
         {
             // XMLContent Reading
-            var xmlContent = XmlContent("books.xml").Result;
-            Console.WriteLine(xmlContent);
+           /* var xmlContent = XmlContent("books.xml").Result;
+            Console.WriteLine(xmlContent);*/
 
 
-            //Table setting reading
-            /*var customerName = "Cliente1";
-            var appSettingName = "StringConnectionMainDB";
+            //Reading one setting of a given customer
+            var customerName = "Cliente1";
+            var appSettingName = "TTL";
             var appSettingValue = TableAppSetting(customerName, appSettingName);
-            Console.WriteLine($"The {appSettingName} for {customerName} is: {appSettingValue}");*/
-
-
-
-
+            Console.WriteLine($"One setting read: {appSettingValue}");
+            Console.ReadKey();
+            //Reading all the settings of a given customer
+            var appSettingsValue = TableAppSetting(customerName);
+            Console.WriteLine($"All settings read: {appSettingsValue}");
             Console.ReadKey();
         }
 
@@ -53,7 +54,7 @@ namespace XmlContentFromBlob
             else return "ERROR";
         }
 
-        public static string TableAppSetting(string customerReference, string settingName)
+        public static string TableAppSetting(string customerReference, string settingName="")
         {
             var accountName = "sayouevaldev";
             var accountKey = "MGpkGpZ/Vqs9u9aXADlJteA5E/FqvMBIzhywqyRrl2n8DHm+m8RuKhkVbSH7PyXYZSnLpFxQv8uWIJLS5vaofA==";
@@ -66,21 +67,35 @@ namespace XmlContentFromBlob
                 QueryComparisons.Equal,
                 customerReference);
 
-            var appSettingFilter = TableQuery.GenerateFilterCondition(
-                "RowKey",
-                QueryComparisons.Equal,
-                settingName);
+            var combinedFilter = customerFilter;
 
-            var combinedFilter = TableQuery.CombineFilters(
-                customerFilter,
-                TableOperators.And,
-                appSettingFilter
-                );
+            //If no setting name is passed, then we return all settings from the referenced customer
+            if (settingName != string.Empty)
+            {
+
+                var appSettingFilter = TableQuery.GenerateFilterCondition(
+                    "RowKey",
+                    QueryComparisons.Equal,
+                    settingName);
+
+                combinedFilter = TableQuery.CombineFilters(
+                    customerFilter,
+                    TableOperators.And,
+                    appSettingFilter
+                    );
+            }
 
             var query = new TableQuery().Where(combinedFilter);
             var virtualResults = table.ExecuteQuery(query);
-            var settingValue = virtualResults.FirstOrDefault()["value"].StringValue;
-            return settingValue;
+            var settings =
+                (from setting in virtualResults
+                 select new
+                 {
+                     name = setting.RowKey,
+                     value = setting["value"].StringValue
+                 });
+            var jsonSettings = JsonConvert.SerializeObject(settings);
+            return jsonSettings;
         }
     }
 }
